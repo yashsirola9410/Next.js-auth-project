@@ -25,13 +25,13 @@ export default function SignupPage(){
             toast.success("Signup success");
             router.push("/login");
         } catch (error: unknown) {
-            let errorMessage = "Signup failed ";
-            if (typeof error === "object" && error !== null && "message" in error) {
-                errorMessage = (error as { message: string }).message;
-            }
-            console.log("Signup failed", errorMessage);
-            toast.error(errorMessage);
-        }finally{
+  if (axios.isAxiosError(error)) {
+    console.log("Backend error:", error.response?.data);
+    toast.error(error.response?.data?.error || "Signup failed");
+  } else {
+    toast.error("Signup failed");
+  }
+}finally{
             setLoading(false);
         }
      }
@@ -80,7 +80,7 @@ export default function SignupPage(){
             <button
             onClick={onSignup}
             disabled={buttonDisabled}
-            className={`p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600${buttonDisabled ? " opacity-50 cursor-not-allowed" : ""}`}>Login here</button>
+            className={`p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600${buttonDisabled ? " opacity-50 cursor-not-allowed" : ""}`}>Signup here</button>
             <Link href="/signup">Visit Signup page</Link>
         </div>
     )
